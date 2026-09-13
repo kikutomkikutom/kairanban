@@ -70,25 +70,21 @@
     margin: 0 0 16px;
   }
   .pdf-frame {
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    overflow: hidden;
     margin-bottom: 16px;
-    background: #fff;
   }
-  .pdf-frame iframe {
-    display: block;
-    width: 100%;
-    height: 360px;
-    border: none;
-  }
-  .pdf-fallback {
+  .pdf-open-btn {
     display: block;
     text-align: center;
-    padding: 14px;
-    font-size: 14px;
-    color: var(--moss-dark);
-    text-decoration: underline;
+    padding: 18px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    background: var(--clay);
+    border-radius: 8px;
+    text-decoration: none;
+  }
+  .pdf-open-btn:active {
+    background: #944e26;
   }
   label.name-label {
     display: block;
@@ -173,8 +169,9 @@
 
     <div class="pdf-frame">
       <!-- PDFのURLを差し替えてください（Googleドライブの共有リンクなど） -->
-      <iframe src="https://drive.google.com/file/d/1Tq7AzajELxnfUhuK5LpNxWAI-mpJf8t6/view?usp=sharing" title="今回のお知らせPDF"></iframe>
-      <a class="pdf-fallback" href="https://drive.google.com/file/d/1Tq7AzajELxnfUhuK5LpNxWAI-mpJf8t6/view?usp=sharing" target="_blank" rel="noopener">PDFが表示されない場合はこちらを開く</a>
+      <a class="pdf-open-btn" href="https://drive.google.com/file/d/1Tq7AzajELxnfUhuK5LpNxWAI-mpJf8t6/view?usp=sharing" target="_blank" rel="noopener">
+        お知らせのPDFを開く
+      </a>
     </div>
 
     <label class="name-label" for="householdSelect">お名前（世帯）を選んでください</label>
