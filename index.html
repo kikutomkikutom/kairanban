@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>町内会 回覧板</title>
+<style>
+  :root {
+    --ink: #2c2c2a;
+    --sub: #6b6a63;
+    --paper: #faf8f3;
+    --card: #ffffff;
+    --line: #e3e0d6;
+    --moss: #4a6741;
+    --moss-dark: #35492f;
+    --clay: #b5622f;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+    line-height: 1.7;
+  }
+  .wrap {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+  }
+  header {
+    text-align: center;
+    padding: 8px 0 28px;
+    border-bottom: 3px solid var(--moss);
+    margin-bottom: 28px;
+  }
+  header .kanban {
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    color: var(--sub);
+    margin-bottom: 6px;
+  }
+  header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0;
+  }
+  h2.section-title {
+    font-size: 15px;
+    color: var(--sub);
+    margin: 0 0 12px;
+    font-weight: 700;
+  }
+  .current-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 40px;
+  }
+  .current-card .date {
+    font-size: 13px;
+    color: var(--sub);
+    margin-bottom: 4px;
+  }
+  .current-card .title {
+    font-size: 19px;
+    font-weight: 700;
+    margin: 0 0 16px;
+  }
+  .pdf-frame {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    background: #fff;
+  }
+  .pdf-frame iframe {
+    display: block;
+    width: 100%;
+    height: 360px;
+    border: none;
+  }
+  .pdf-fallback {
+    display: block;
+    text-align: center;
+    padding: 14px;
+    font-size: 14px;
+    color: var(--moss-dark);
+    text-decoration: underline;
+  }
+  label.name-label {
+    display: block;
+    font-size: 14px;
+    color: var(--sub);
+    margin-bottom: 6px;
+  }
+  select#householdSelect {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 16px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    margin-bottom: 14px;
+    background: #fff;
+    color: var(--ink);
+  }
+  button#seenBtn {
+    width: 100%;
+    padding: 16px;
+    font-size: 17px;
+    font-weight: 700;
+    color: #fff;
+    background: var(--moss);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  button#seenBtn:active { background: var(--moss-dark); }
+  button#seenBtn:disabled {
+    background: #a9a79c;
+    cursor: default;
+  }
+  #statusMsg {
+    text-align: center;
+    font-size: 14px;
+    color: var(--sub);
+    margin-top: 12px;
+    min-height: 20px;
+  }
+  ul.past-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  ul.past-list li {
+    border-bottom: 1px solid var(--line);
+  }
+  ul.past-list a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 4px;
+    text-decoration: none;
+    color: var(--ink);
+    font-size: 15px;
+  }
+  ul.past-list .past-date {
+    font-size: 13px;
+    color: var(--sub);
+  }
+  footer {
+    text-align: center;
+    font-size: 12px;
+    color: var(--sub);
+    margin-top: 48px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kanban">町内会 回覧板</div>
+    <h1>〇〇町内会</h1>
+  </header>
+
+  <section class="current-card">
+    <h2 class="section-title">今回のお知らせ</h2>
+    <div class="date">2026年9月13日</div>
+    <p class="title">秋祭りのご案内</p>
+
+    <div class="pdf-frame">
+      <!-- PDFのURLを差し替えてください（Googleドライブの共有リンクなど） -->
+      <iframe src="PDFのURLをここに入れる" title="今回のお知らせPDF"></iframe>
+      <a class="pdf-fallback" href="PDFのURLをここに入れる" target="_blank" rel="noopener">PDFが表示されない場合はこちらを開く</a>
+    </div>
+
+    <label class="name-label" for="householdSelect">お名前（世帯）を選んでください</label>
+    <select id="householdSelect">
+      <option value="">選択してください</option>
+      <option value="1班_佐藤">1班 佐藤</option>
+      <option value="1班_鈴木">1班 鈴木</option>
+      <option value="2班_田中">2班 田中</option>
+      <!-- 実際の世帯名に差し替えてください -->
+    </select>
+
+    <button id="seenBtn">見ました</button>
+    <div id="statusMsg"></div>
+    <div id="seenCount" style="text-align:center; font-size:13px; color:var(--sub); margin-top:10px;"></div>
+  </section>
+
+  <section>
+    <h2 class="section-title">過去の資料</h2>
+    <ul class="past-list">
+      <li><a href="#" target="_blank" rel="noopener"><span>防災訓練のお知らせ</span><span class="past-date">8/20</span></a></li>
+      <li><a href="#" target="_blank" rel="noopener"><span>ゴミ出しルール変更</span><span class="past-date">7/05</span></a></li>
+      <li><a href="#" target="_blank" rel="noopener"><span>総会議事録</span><span class="past-date">6/15</span></a></li>
+    </ul>
+  </section>
+
+  <footer>このページは町内会での情報共有のために作成しています</footer>
+</div>
+
+<script>
+  // GASで公開したWebアプリのURLに差し替えてください
+  const GAS_ENDPOINT = "YOUR_GAS_WEB_APP_URL_HERE";
+  // 現在のお知らせを識別するID（お知らせごとに変更してください）
+  const NOTICE_ID = "2026-09-13_akimatsuri";
+
+  const btn = document.getElementById('seenBtn');
+  const select = document.getElementById('householdSelect');
+  const statusMsg = document.getElementById('statusMsg');
+  const seenCountEl = document.getElementById('seenCount');
+
+  function refreshCount() {
+    fetch(GAS_ENDPOINT + '?noticeId=' + encodeURIComponent(NOTICE_ID))
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (data && typeof data.count === 'number') {
+          seenCountEl.textContent = '既読 ' + data.count + '世帯';
+        }
+      })
+      .catch(function () { /* 表示できなくても致命的ではないため何もしない */ });
+  }
+
+  refreshCount();
+
+  btn.addEventListener('click', function () {
+    const household = select.value;
+    if (!household) {
+      statusMsg.textContent = '世帯を選択してから押してください';
+      statusMsg.style.color = '#b5622f';
+      return;
+    }
+
+    btn.disabled = true;
+    statusMsg.style.color = '';
+    statusMsg.textContent = '送信中…';
+
+    fetch(GAS_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ noticeId: NOTICE_ID, household: household })
+    })
+      .then(function () {
+        statusMsg.textContent = '見ました。ありがとうございます。';
+        refreshCount();
+      })
+      .catch(function () {
+        statusMsg.textContent = '送信に失敗しました。時間をおいて再度お試しください。';
+        statusMsg.style.color = '#b5622f';
+        btn.disabled = false;
+      });
+  });
+</script>
+
+</body>
+</html>

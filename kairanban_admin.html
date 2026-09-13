@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>回覧板 既読確認（班長用）</title>
+<style>
+  :root {
+    --ink: #2c2c2a;
+    --sub: #6b6a63;
+    --paper: #faf8f3;
+    --card: #ffffff;
+    --line: #e3e0d6;
+    --moss: #4a6741;
+    --moss-dark: #35492f;
+    --clay: #b5622f;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+    line-height: 1.7;
+  }
+  .wrap { max-width: 480px; margin: 0 auto; padding: 24px 20px 60px; }
+  h1 { font-size: 20px; margin: 0 0 20px; }
+  label { display: block; font-size: 14px; color: var(--sub); margin-bottom: 6px; }
+  input, select {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 16px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    margin-bottom: 14px;
+    background: #fff;
+  }
+  button {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    background: var(--moss);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+  #result { font-size: 14px; }
+  #result .count { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+  ul#householdList { list-style: none; padding: 0; margin: 0; }
+  ul#householdList li {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  #errorMsg { color: var(--clay); font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>既読確認（班長用）</h1>
+
+  <label for="noticeIdInput">お知らせID</label>
+  <input id="noticeIdInput" type="text" placeholder="例: 2026-09-13_akimatsuri" value="2026-09-13_akimatsuri">
+
+  <label for="keyInput">合言葉</label>
+  <input id="keyInput" type="password" placeholder="合言葉を入力">
+
+  <button id="checkBtn">確認する</button>
+
+  <div id="result"></div>
+  <div id="errorMsg"></div>
+</div>
+
+<script>
+  // Webページ側と同じGASのWebアプリURLを設定してください
+  const GAS_ENDPOINT = "YOUR_GAS_WEB_APP_URL_HERE";
+
+  document.getElementById('checkBtn').addEventListener('click', function () {
+    const noticeId = document.getElementById('noticeIdInput').value.trim();
+    const key = document.getElementById('keyInput').value.trim();
+    const resultEl = document.getElementById('result');
+    const errorEl = document.getElementById('errorMsg');
+    resultEl.innerHTML = '';
+    errorEl.textContent = '';
+
+    if (!noticeId || !key) {
+      errorEl.textContent = 'お知らせIDと合言葉を入力してください';
+      return;
+    }
+
+    const url = GAS_ENDPOINT + '?noticeId=' + encodeURIComponent(noticeId) + '&key=' + encodeURIComponent(key);
+
+    fetch(url)
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (!data.households) {
+          errorEl.textContent = '合言葉が違うか、該当するお知らせがありません';
+          return;
+        }
+        let html = '<div class="count">既読 ' + data.count + '世帯</div>';
+        html += '<ul id="householdList">';
+        data.households.forEach(function (h) {
+          html += '<li>' + h + '</li>';
+        });
+        html += '</ul>';
+        resultEl.innerHTML = html;
+      })
+      .catch(function () {
+        errorEl.textContent = '取得に失敗しました。時間をおいて再度お試しください。';
+      });
+  });
+</script>
+</body>
+</html>
